@@ -22,11 +22,14 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void produceSensor(SensorEvent sensorEvent) {
-        kafkaClient.send(sensorsEventsTopic, sensorEvent.getHubId(), sensorEventMapper.toAvro(sensorEvent));
+        long timestamp = sensorEvent.getTimestamp().toEpochMilli();
+        kafkaClient.send(sensorsEventsTopic, sensorEvent.getHubId(), sensorEventMapper.toAvro(sensorEvent),
+                timestamp);
     }
 
     @Override
     public void produceHub(HubEvent hubEvent) {
-        kafkaClient.send(hubsEventsTopic, hubEvent.getHubId(), hubEventMapper.toAvro(hubEvent));
+        long timestamp = hubEvent.getTimestamp().toEpochMilli();
+        kafkaClient.send(hubsEventsTopic, hubEvent.getHubId(), hubEventMapper.toAvro(hubEvent), timestamp);
     }
 }

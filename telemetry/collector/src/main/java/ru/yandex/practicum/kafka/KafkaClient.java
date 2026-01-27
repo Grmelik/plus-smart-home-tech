@@ -13,8 +13,10 @@ import org.springframework.stereotype.Component;
 public class KafkaClient implements AutoCloseable {
     private final KafkaProducer<String, SpecificRecordBase> producer;
 
-    public void send(String topic, String key, SpecificRecordBase recordBase) {
-        producer.send(new ProducerRecord<>(topic, key, recordBase), (recordMetadata, exception) -> {
+    public void send(String topic, String key, SpecificRecordBase recordBase, long timestamp) {
+        ProducerRecord<String, SpecificRecordBase> record = new ProducerRecord<>(topic, null, timestamp, key, recordBase);
+
+        producer.send(record, (recordMetadata, exception) -> {
             if (exception != null) {
                 log.error("Ошибка при отправке в Kafka", exception);
             }
