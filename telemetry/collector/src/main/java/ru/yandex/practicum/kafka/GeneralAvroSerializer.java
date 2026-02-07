@@ -10,25 +10,33 @@ import org.apache.kafka.common.serialization.Serializer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Map;
 
 public class GeneralAvroSerializer implements Serializer<SpecificRecordBase> {
 
-    private final EncoderFactory encoderFactory = EncoderFactory.get();
-    private BinaryEncoder encoder;
+    @Override
+    public void configure(Map<String, ?> configs, boolean isKey) {
+    }
 
+    @Override
     public byte[] serialize(String topic, SpecificRecordBase data) {
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            byte[] result = null;
-            encoder = encoderFactory.binaryEncoder(out, encoder);
-            if (data != null) {
-                DatumWriter<SpecificRecordBase> writer = new SpecificDatumWriter<>(data.getSchema());
-                writer.write(data, encoder);
-                encoder.flush();
-                result = out.toByteArray();
-            }
-            return result;
-        } catch (IOException ex) {
-            throw new SerializationException("Ошибка сериализации данных для топика [" + topic + "]", ex);
+        if (data == null) {
+            return null;
         }
+
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            BinaryEncoder encoder = EncoderFactory.get().binaryEncoder(out, null);
+            DatumWriter<SpecificRecordBase> writer = new SpecificDatumWriter<>(data.getSchema());
+            writer.write(data, encoder);
+            encoder.flush();
+            return out.toByteArray();
+        } catch (IOException ex) {
+            throw new SerializationException(
+                    "Avro data serialization error for a topic [" + topic + "]", ex);
+        }
+    }
+
+    @Override
+    public void close() {
     }
 }

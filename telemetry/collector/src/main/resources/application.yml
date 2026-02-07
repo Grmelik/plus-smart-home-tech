@@ -1,0 +1,34 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+kafka:
+  health-check:
+    enabled: true
+
+server:
+  port: 8080
+
+grpc:
+  server:
+    port: 59091  # Должен совпадать с портом в тестовом компоненте!
+    enable-reflection: true
+
+collector:
+  kafka:
+    bootstrap-server: localhost:9092
+    topics:
+      sensors: telemetry.sensors.v1
+      hubs: telemetry.hubs.v1
+    producer:
+      acks: "all"
+      retries: 3
+      enable.idempotence: true
+      linger.ms: 5
+      batch.size: 16384
+      buffer.memory: 33554432
