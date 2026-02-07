@@ -1,0 +1,10 @@
+aggregator:
+  kafka:
+    bootstrap-server: localhost:9092
+    group-id: telemetry.aggregator
+    input-topic: telemetry.sensors.v1
+    output-topic: telemetry.snapshots.v1
+logging:
+  level:
+    ru.yandex.practicum: DEBUG
+    root: INFO
