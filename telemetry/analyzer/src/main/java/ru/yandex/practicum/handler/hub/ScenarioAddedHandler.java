@@ -1,6 +1,7 @@
 package ru.yandex.practicum.handler.hub;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.kafka.telemetry.event.DeviceActionAvro;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class ScenarioAddedHandler implements HubEventHandler {
     private final ActionRepository actionRepository;
     private final ConditionRepository conditionRepository;
@@ -37,16 +39,38 @@ public class ScenarioAddedHandler implements HubEventHandler {
     @Transactional
     public void handle(HubEventAvro event) {
         ScenarioAddedEventAvro scenarioAddedAvro = (ScenarioAddedEventAvro) event.getPayload();
-        Optional<Scenario> scenario = scenarioRepository.findByHubIdAndName(event.getHubId(),
-                scenarioAddedAvro.getName());
+        String hubId = event.getHubId();
+        String scenarioName = scenarioAddedAvro.getName();
 
-        Scenario scenarioEntity = scenario.orElseGet(() -> scenarioRepository.save(toScenario(event)));
+        log.info("Scenario handling: hubId = {}, name = {}", hubId, scenarioName);
 
-        if (checkSensorInActions(scenarioAddedAvro, event.getHubId())) {
-            actionRepository.saveAll(toActions(scenarioAddedAvro, scenarioEntity));
+        Optional<Scenario> existingScenario = scenarioRepository.findByHubIdAndName(hubId, scenarioName);
+        Scenario scenario = existingScenario.orElseGet(() -> {
+            log.info("Scenario was not found. The new scenario will be created: hubId = {}, name = {}",
+                    hubId, scenarioName);
+            return scenarioRepository.save(toScenario(event));
+        });
+
+        if (existingScenario.isPresent()) {
+            log.info("Scenario already exists, it will be updated: hubId = {}, name = {}", hubId, scenarioName);
+            actionRepository.deleteByScenario(scenario);
+            conditionRepository.deleteByScenario(scenario);
         }
-        if (checkSensorInConditions(scenarioAddedAvro, event.getHubId())) {
-            conditionRepository.saveAll(toConditions(scenarioAddedAvro, scenarioEntity));
+
+        if (checkSensorInActions(scenarioAddedAvro, hubId)) {
+            Set<Action> actions = toActions(scenarioAddedAvro, scenario);
+            actionRepository.saveAll(actions);
+            log.info("Added {} actions for scenario {}", actions.size(), scenarioName);
+        } else {
+            log.warn("Some sensors for actions were not found in the hub {}, scenario {}", hubId, scenarioName);
+        }
+
+        if (checkSensorInConditions(scenarioAddedAvro, hubId)) {
+            Set<Condition> conditions = toConditions(scenarioAddedAvro, scenario);
+            conditionRepository.saveAll(conditions);
+            log.info("Added {} conditions for scenario {}", conditions.size(), scenarioName);
+        } else {
+            log.warn("Some sensors for conditions were not found in the hub {}, scenario {}", hubId, scenarioName);
         }
     }
 
