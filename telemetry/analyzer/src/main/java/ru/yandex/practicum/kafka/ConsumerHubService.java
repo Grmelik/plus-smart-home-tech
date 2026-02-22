@@ -20,8 +20,8 @@ public class ConsumerHubService {
     private final KafkaConsumer<String, SpecificRecordBase> consumer;
 
     public ConsumerHubService(
-            @Value("${analyzer.kafka.group-id.hub}") String groupId,
-            @Value("${analyzer.kafka.bootstrap-server}") String bootstrapServer
+            @Value("${kafka.group-id.hub}") String groupId,
+            @Value("${kafka.bootstrap-server}") String bootstrapServer
     ) {
         Properties config = new Properties();
         config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);

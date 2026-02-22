@@ -31,10 +31,10 @@ public class AggregationStarter {
     private String outputTopic;
 
     public AggregationStarter(
-            @Value("${aggregator.kafka.bootstrap-server}") String bootstrapServer,
-            @Value("${aggregator.kafka.group-id}") String groupId,
-            @Value("${aggregator.kafka.input-topic}") String inputTopic,
-            @Value("${aggregator.kafka.output-topic}") String outputTopic,
+            @Value("${kafka.bootstrap-server}") String bootstrapServer,
+            @Value("${kafka.group-id}") String groupId,
+            @Value("${kafka.input-topic}") String inputTopic,
+            @Value("${kafka.output-topic}") String outputTopic,
             SnapshotStorage snapshotStorage
     ) {
         this.inputTopic = inputTopic;

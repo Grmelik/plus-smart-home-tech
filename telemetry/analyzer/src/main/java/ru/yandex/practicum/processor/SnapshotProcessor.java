@@ -21,7 +21,7 @@ import java.util.List;
 public class SnapshotProcessor implements Runnable {
     private final ConsumerSnapshotService snapshotConsumer;
     private final SnapshotHandler snapshotHandler;
-    @Value("${analyzer.kafka.topics.snapshot}")
+    @Value("${kafka.topics.snapshot}")
     String topic;
 
     @Override

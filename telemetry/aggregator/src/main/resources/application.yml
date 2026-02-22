@@ -1,10 +1,18 @@
-aggregator:
-  kafka:
-    bootstrap-server: localhost:9092
-    group-id: telemetry.aggregator
-    input-topic: telemetry.sensors.v1
-    output-topic: telemetry.snapshots.v1
+spring:
+  application:
+    name: aggregator
+  config:
+    import: configserver:http://localhost:8888
+  cloud:
+    config:
+      fail-fast: true
+      retry:
+        useRandomPolicy: true
+        max-interval: 6000
+
 logging:
   level:
-    ru.yandex.practicum: DEBUG
-    root: INFO
+    ru.yandex.practicum: TRACE
+    org:
+      springframework: ERROR
+      apache.kafka: ERROR
