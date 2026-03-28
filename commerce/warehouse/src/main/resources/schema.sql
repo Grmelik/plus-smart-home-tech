@@ -1,7 +1,5 @@
 CREATE SCHEMA IF NOT EXISTS warehouse;
 
-DROP TABLE warehouse.products;
-
 CREATE TABLE IF NOT EXISTS warehouse.products (
     product_id UUID PRIMARY KEY,
     fragile BOOLEAN,
