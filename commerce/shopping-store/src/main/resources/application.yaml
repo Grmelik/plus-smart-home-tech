@@ -1,8 +1,8 @@
 spring:
   application:
-    name: collector
+    name: shopping-store
   config:
-    import: "optional:configserver:"
+    import: "configserver:"
   cloud:
     config:
       discovery:
@@ -12,6 +12,7 @@ spring:
       retry:
         useRandomPolicy: true
         max-interval: 6000
+
 eureka:
   client:
     serviceUrl:
