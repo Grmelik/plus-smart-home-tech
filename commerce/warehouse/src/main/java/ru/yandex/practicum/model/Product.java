@@ -33,6 +33,6 @@ public class Product {
     @Column(name = "weight")
     private Double weight;
 
-    @Column(name = "quantity")
-    private Long quantity;
+    @Column(name = "quantity", nullable = false)
+    private Long quantity = 0L;
 }

@@ -47,7 +47,15 @@ public class WarehouseServiceImpl implements WarehouseService {
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new NoSpecifiedProductInWarehouseException(
                         "The product with id " + request.getProductId() + " is out of warehouse"));
-        product.setQuantity(product.getQuantity() + request.getQuantity());
+
+        Long currentQuantity = product.getQuantity();
+        if (currentQuantity == null) {
+            currentQuantity = 0L;
+        }
+
+        Long newQuantity = currentQuantity + request.getQuantity();
+
+        product.setQuantity(newQuantity);
         final Product updatedProduct = productRepository.save(product);
         log.info("The product {} has been updated to a quantity: {}", updatedProduct.getProductId(),
                 updatedProduct.getQuantity());

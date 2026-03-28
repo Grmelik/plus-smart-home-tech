@@ -1,5 +1,7 @@
 CREATE SCHEMA IF NOT EXISTS warehouse;
 
+DROP TABLE warehouse.products;
+
 CREATE TABLE IF NOT EXISTS warehouse.products (
     product_id UUID PRIMARY KEY,
     fragile BOOLEAN,
@@ -7,5 +9,5 @@ CREATE TABLE IF NOT EXISTS warehouse.products (
     height DOUBLE PRECISION NOT NULL,
     depth DOUBLE PRECISION NOT NULL,
     weight DOUBLE PRECISION NOT NULL,
-    quantity BIGINT
+    quantity BIGINT NOT NULL DEFAULT 0
 );

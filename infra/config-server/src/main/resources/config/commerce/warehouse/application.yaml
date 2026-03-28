@@ -19,5 +19,4 @@ spring:
       mode: always
 
 server:
-  port: 8085
-  #port: 0
+  port: 0

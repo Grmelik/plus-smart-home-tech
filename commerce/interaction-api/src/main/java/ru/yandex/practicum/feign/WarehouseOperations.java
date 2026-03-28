@@ -19,7 +19,7 @@ public interface WarehouseOperations {
     void addProduct(@RequestBody @Valid NewProductInWarehouseRequest request);
 
     @PostMapping("/check")
-    BookedProductsDto checkWarehouse(@RequestBody @Valid ShoppingCartDto cartDto);
+    BookedProductsDto checkWarehouse(@RequestBody ShoppingCartDto cartDto);
 
     @PostMapping("/add")
     void increaseProductQuantity(@RequestBody @Valid AddProductToWarehouseRequest request);
