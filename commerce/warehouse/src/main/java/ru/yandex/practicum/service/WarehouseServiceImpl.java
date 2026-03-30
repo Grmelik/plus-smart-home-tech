@@ -106,7 +106,8 @@ public class WarehouseServiceImpl implements WarehouseService {
             totalVolume += product.getWidth() * product.getHeight() * product.getDepth() * quantity;
             bookedProductsDto.setDeliveryVolume(totalVolume);
 
-            if (product.getFragile()) {
+            Boolean fragile = product.getFragile();
+            if (fragile) {
                 bookedProductsDto.setFragile(true);
             }
         }

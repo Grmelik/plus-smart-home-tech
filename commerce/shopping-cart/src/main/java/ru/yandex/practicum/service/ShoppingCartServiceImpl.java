@@ -78,7 +78,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         ShoppingCart shoppingCart = getOrCreateShoppingCart(username);
         checkCartIsActive(shoppingCart);
-        shoppingCart.getProducts().keySet().retainAll(products);
+        shoppingCart.getProducts().keySet().removeAll(products);
         ShoppingCart updatedCart = cartRepository.save(shoppingCart);
         log.debug("Updated cart: {}.", updatedCart);
 
