@@ -4,7 +4,9 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
+import ru.yandex.practicum.dto.warehouse.AssemblyProductsForOrderRequest;
 import ru.yandex.practicum.dto.warehouse.NewProductInWarehouseRequest;
+import ru.yandex.practicum.model.Booking;
 import ru.yandex.practicum.model.Product;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
@@ -15,4 +17,10 @@ public interface ProductMapper {
     @Mapping(target = "width", source = "dto.dimension.width")
     @Mapping(target = "height", source = "dto.dimension.height")
     Product toEntity(NewProductInWarehouseRequest dto);
+
+    @Mapping(target = "bookingId", ignore = true)
+    @Mapping(target = "orderId", source = "request.orderId")
+    @Mapping(target = "deliveryId", ignore = true)
+    @Mapping(target = "products", source = "request.products")
+    Booking toBooking(AssemblyProductsForOrderRequest request);
 }

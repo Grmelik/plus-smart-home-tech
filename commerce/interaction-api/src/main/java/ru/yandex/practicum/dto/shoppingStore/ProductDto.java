@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -28,5 +29,5 @@ public class ProductDto {
     private ProductCategory productCategory;
     @NotNull
     @Min(1)
-    private Double price;
+    private BigDecimal price;
 }
