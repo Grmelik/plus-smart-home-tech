@@ -12,7 +12,7 @@ import java.util.Random;
 public class WarehouseAddressServiceImpl implements WarehouseAddressService {
 
     private static final String[] addresses = new String[]{"ADDRESS_1", "ADDRESS_2"};
-    private static final String address = addresses[Random.from(new SecureRandom()).nextInt(0, 1)];
+    private static final String address = addresses[Random.from(new SecureRandom()).nextInt(0, 2)];
 
     @Override
     public AddressDto getAddress() {
