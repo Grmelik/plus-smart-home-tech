@@ -1,7 +1,6 @@
-application:
-  name: shopping-cart
-
 spring:
+  application:
+    name: shopping-cart
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/smarthome?currentSchema=cart

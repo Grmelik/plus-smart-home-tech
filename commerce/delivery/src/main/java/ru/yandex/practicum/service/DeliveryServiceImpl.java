@@ -46,9 +46,9 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Transactional
     @Override
     public BigDecimal getDeliveryCost(OrderDto orderDto) {
-        Delivery delivery = deliveryRepository.findByOrderId(orderDto.getDeliveryId())
+        Delivery delivery = deliveryRepository.findById(orderDto.getDeliveryId())
                 .orElseThrow(() -> new NoDeliveryFoundException("Delivery for order with id={} not found" +
-                        orderDto.getDeliveryId()));
+                        orderDto.getOrderId()));
         log.debug("Calculate the cost delivery for the order with id={} ", orderDto.getDeliveryId());
         return deliveryCalculator.calculate(orderDto, delivery);
     }

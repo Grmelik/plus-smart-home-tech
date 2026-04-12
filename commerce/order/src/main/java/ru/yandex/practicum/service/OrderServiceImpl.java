@@ -113,9 +113,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto processPaymentSuccess(UUID orderId) {
         log.debug("Processing payment for order with id={}", orderId);
         Order order = getOrderById(orderId);
-        //order.setState(OrderState.PAID);
         warehouseClient.assemblyProductsForOrder(new AssemblyProductsForOrderRequest(order.getProducts(), orderId));
-        //Order savedOrder = orderRepository.save(order);
         Order savedOrder = changeOrderState(order, OrderState.PAID);
         return orderMapper.toOrderDto(savedOrder);
     }

@@ -1,7 +1,6 @@
-application:
-  name: delivery
-
 spring:
+  application:
+    name: order
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/smarthome?currentSchema=orders
