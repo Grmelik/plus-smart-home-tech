@@ -10,9 +10,9 @@ spring:
           searchLocations:
             - classpath:config/commerce/{application}
             - classpath:config/telemetry/{application}
+            - classpath:config/infra/{application}
 server:
   port: 0
-  #port: 8888
 
 eureka:
   instance:
